@@ -54,8 +54,14 @@ def extract_price_currency_country(description):
     return price_value, currency, country_origin
 
 def extract_color_weight_code(description):
-    # That piece up to you guys
-    return nothing, nothing, nothing
+    color_match = re.search(r'Color:\s*([^\.\n,]+)', description, re.IGNORECASE)
+    weight_match = re.search(r'Weight:\s*(\d+)\s*g', description, re.IGNORECASE)
+    code_match = re.search(r'(UPC|EAN|Product Code):\s*([A-Za-z0-9\-]+)', description, re.IGNORECASE)
+    
+    color = color_match.group(1).strip() if color_match else None
+    weight_g = int(weight_match.group(1)) if weight_match else None
+    product_code = code_match.group(2).strip() if code_match else None
+    return color, weight_g, product_code
 
 def parse_product(product):
     """
