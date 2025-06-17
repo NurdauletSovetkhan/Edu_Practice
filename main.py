@@ -91,8 +91,19 @@ def parse_product(product):
     }
 
 def generate_sql_insert(parsed_product):
-    # IDK what I must write here
-    return nothing
+    def escape(value):
+        if isinstance(value, str):
+            return "'" + value.replace("'", "''") + "'"
+        if value is None:
+            return "NULL"
+        return str(value)
+    columns = [
+        'id', 'brand', 'model', 'price_value', 'currency',
+        'country_origin', 'color', 'weight_g', 'product_code'
+    ]
+    values = ", ".join(escape(parsed_product.get(col)) for col in columns)
+    insert_statement = f"INSERT INTO products ({', '.join(columns)}) VALUES ({values});"
+    return insert_statement
 
 def main():
     # Open the JSON file and load its content
