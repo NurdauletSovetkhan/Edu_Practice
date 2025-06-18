@@ -21,6 +21,7 @@ nothing = None
 #     product_code TEXT
 # );
 
+# Student A - Nurdaulet Sovetkhan
 def extract_brand_model(description):
     # Chech if description matches by pattern
     brand_match = re.search(r'^(.*?),?\s+model', description)
@@ -40,6 +41,7 @@ def extract_brand_model(description):
 
     return brand, model
 
+# Student B - Miras Assem
 def extract_price_currency_country(description):
     # Search for the price value and currency (e.g., "Price: 123.45 USD")
     price_match = re.search(r'Price:\s*(\d+\.\d{2})\s*([A-Z]{3})?', description)
@@ -53,6 +55,7 @@ def extract_price_currency_country(description):
     country_origin = country_match.group(1).strip() if country_match else None
     return price_value, currency, country_origin
 
+# Student C - Yernazar Rakhmetov
 def extract_color_weight_code(description):
     color_match = re.search(r'Color:\s*([^\.\n,]+)', description, re.IGNORECASE)
     weight_match = re.search(r'Weight:\s*(\d+)\s*g', description, re.IGNORECASE)
@@ -102,7 +105,7 @@ def generate_sql_insert(parsed_product):
         'country_origin', 'color', 'weight_g', 'product_code'
     ]
     values = ", ".join(escape(parsed_product.get(col)) for col in columns)
-    insert_statement = f"INSERT INTO products ({', '.join(columns)}) VALUES ({values});"
+    insert_statement = f"INSERT INTO extracted_products  ({', '.join(columns)}) VALUES ({values});"
     return insert_statement
 
 def main():
